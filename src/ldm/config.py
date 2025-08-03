@@ -8,11 +8,11 @@ project_root = Path(__file__).resolve().parent.parent.parent
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-vae_model_path = str(project_root / 'models' / 'vae.pth')
-unet_model_path = str(project_root / 'models' / 'unet.pth')
+vae_model_path = str(project_root / "models" / "vae.pth")
+unet_model_path = str(project_root / "models" / "unet.pth")
 
-vae_plots_path = str(project_root / 'plots' / 'vae')
-unet_plots_path = str(project_root / 'plots' / 'unet')
+vae_plots_path = str(project_root / "plots" / "vae")
+unet_plots_path = str(project_root / "plots" / "unet")
 
 # Get the config in project root dir
 config_path = os.path.join(project_root, "config.yaml")
