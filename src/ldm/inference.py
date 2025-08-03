@@ -1,20 +1,18 @@
+import torch
+import os
+from diffusers import DDPMScheduler
+
 from ldm.utils import generate, create_path_if_not_exists
 from ldm.config import *
 from ldm.models import *
 from ldm.train import train
 
-from diffusers import DDPMScheduler
-import torch
-
-import os
-
-project_root = Path(__file__).resolve().parent.parent.parent
 
 def sample():
     if os.path.exists(unet_model_path) and os.path.exists(vae_model_path):
         vae.load_state_dict(torch.load(vae_model_path))
         unet.load_state_dict(torch.load(unet_model_path))
-        noise_scheduler = DDPMScheduler(num_train_timesteps=denoising_timesteps)
+        noise_scheduler = DDPMScheduler(num_train_timesteps=cfg.denoising_timesteps)
         generate(vae, unet, noise_scheduler, 101)
     else:
         print("Models not trained, training...")

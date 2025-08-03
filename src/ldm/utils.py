@@ -1,17 +1,16 @@
-from ldm.config import (latent_channels, vae_plots_path, unet_plots_path, device)
-
-from diffusers import DDPMScheduler
-import torch
-
-import matplotlib.pyplot as plt
 import torch
 import numpy as np
 import os
+import matplotlib.pyplot as plt
+from ldm.config import *
+from diffusers import DDPMScheduler
 from tqdm import tqdm
+
 
 def create_path_if_not_exists(path: str):
     if not os.path.exists(path):
-        os.mkdir(path)
+        os.makedirs(path)
+
 
 def revert_images(imgs: torch.tensor):
     h = imgs.shape[-1]
@@ -24,6 +23,7 @@ def revert_images(imgs: torch.tensor):
         imgs = imgs.astype(int).reshape(-1, h, h)
 
     return imgs
+
 
 def plot_side_by_side(images_y: torch.tensor, images_pred: torch.tensor, latents: torch.tensor, epoch: int):
     
@@ -54,12 +54,13 @@ def plot_side_by_side(images_y: torch.tensor, images_pred: torch.tensor, latents
     plt.savefig(os.path.join(vae_plots_path, f'epoch_{epoch}_latent_channels.png'))
     plt.clf()
     
+
 def generate(vae: torch.nn.Module, unet: torch.nn.Module, noise_scheduler: DDPMScheduler, epoch: int):
     """
     Generate the samples from Unet.
     """
     def plot(recon_imgs, timesteps, epoch):
-        create_path_if_not_exists(os.path.join(unet_plots_path, f'generate_epoch_{epoch}'))
+        create_path_if_not_exists(os.path.join(str(project_root), "plots", "generated"))
         recon_imgs = revert_images(recon_imgs.sample)
         fig, axs = plt.subplots(2, 5)
         for i in range(10):
@@ -67,10 +68,10 @@ def generate(vae: torch.nn.Module, unet: torch.nn.Module, noise_scheduler: DDPMS
             axs[i//5][i%5].axis('off')  
             axs[i//5][i%5].set_title(str(i))
         plt.suptitle(f"Timesteps: {timesteps}")
-        plt.savefig(os.path.join(unet_plots_path, f'generate_epoch_{epoch}', f'plot {timesteps}.png'))
+        plt.savefig(os.path.join(str(project_root), "plots", "generated", f'plot {timesteps}.png'))
         plt.clf()
         
-    latents = torch.randn((10, latent_channels, 8, 8)).to(device)
+    latents = torch.randn((10, cfg.latent_channels, 8, 8)).to(device)
     labels = torch.arange(10).to(device)
 
     for t in tqdm(noise_scheduler.timesteps):

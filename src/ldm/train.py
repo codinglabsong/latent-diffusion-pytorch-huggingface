@@ -1,25 +1,22 @@
+import numpy as np
+import os
+import torch
+import torch.nn.functional as F
+from accelerate import Accelerator
+from diffusers.optimization import get_cosine_schedule_with_warmup
+from diffusers.training_utils import EMAModel
+from diffusers import DDPMScheduler
+from tqdm import tqdm
+
 from ldm.utils import *
 from ldm.config import *
 from ldm.models import *
 from ldm.data import *
 
-import torch
-import torch.nn.functional as F
-from diffusers.optimization import get_cosine_schedule_with_warmup
-from diffusers.training_utils import EMAModel
-from accelerate import Accelerator
-from diffusers import DDPMScheduler
-
-from tqdm import tqdm
-import numpy as np
-import os
-
-project_root = Path(__file__).resolve().parent.parent.parent
-
 
 def train_vae():
-    vae_optimizer = torch.optim.AdamW(vae.parameters(), lr=lr_vae)
-    for epoch in range(vae_epochs):
+    vae_optimizer = torch.optim.AdamW(vae.parameters(), lr=cfg.lr_vae)
+    for epoch in range(cfg.vae_epochs):
         losses = []
         for step, (images, _) in enumerate(tqdm(train_loader)):
             images = images.to(device)
@@ -30,7 +27,7 @@ def train_vae():
             outputs = vae.decode(posterior['latent_dist'].sample())
             # Compute VAE loss
             recon_loss = F.mse_loss(outputs.sample, images, reduction="mean")
-            kl_loss = (posterior.latent_dist.kl()/(batch_size*img_size*img_size)).mean()
+            kl_loss = (posterior.latent_dist.kl()/(cfg.batch_size*cfg.img_size*cfg.img_size)).mean()
             vae_loss = recon_loss + 0.5 * kl_loss
             
             losses.append(vae_loss.item())
@@ -63,11 +60,11 @@ def train_unet(
     train_loader
 ):
     vae.load_state_dict(torch.load(vae_model_path))
-    noise_scheduler = DDPMScheduler(num_train_timesteps=denoising_timesteps)
-    optimizer = torch.optim.AdamW(unet.parameters(), lr=lr_unet)
+    noise_scheduler = DDPMScheduler(num_train_timesteps=cfg.denoising_timesteps)
+    optimizer = torch.optim.AdamW(unet.parameters(), lr=cfg.lr_unet)
     lr_scheduler = get_cosine_schedule_with_warmup(
         optimizer=optimizer,
-        num_warmup_steps=num_warmup_steps,
+        num_warmup_steps=cfg.num_warmup_steps,
         num_training_steps=(len(train_loader) * 100),
     )
     
@@ -76,7 +73,7 @@ def train_unet(
         unet, optimizer, train_loader, lr_scheduler
     )
     ema_model = EMAModel(unet.parameters(), decay=0.9999, use_ema_warmup=True)
-    for epoch in range(unet_epochs):
+    for epoch in range(cfg.unet_epochs):
         
         losses = []
         for step, (images, labels) in enumerate(tqdm(train_loader)):
