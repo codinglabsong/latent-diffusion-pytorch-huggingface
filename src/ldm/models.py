@@ -1,6 +1,6 @@
 from diffusers import UNet2DConditionModel, AutoencoderKL
 
-from config import latent_channels, device
+from ldm.config import latent_channels, device
 
 vae = AutoencoderKL(
     in_channels=1,

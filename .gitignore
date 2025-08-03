@@ -28,3 +28,9 @@ outputs/
 
 # test images
 images/
+
+# models
+models/
+
+# plots
+plots/

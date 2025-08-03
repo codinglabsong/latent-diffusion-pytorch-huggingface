@@ -1,7 +1,8 @@
 # torch
 # numpy
-# tqdm
-# matplotlib
+tqdm
+matplotlib
 diffusers[torch] 
 # transformers
 # accelerate
+torchvision
