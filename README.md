@@ -1,6 +1,6 @@
-# Latent Diffusion MNIST Experiment
+# Latent Diffusion Model Implementation
 
-Latent Diffusion MNIST Experiment is a Python project exploring the implementation of a latent diffusion model using a variational autoencoder (VAE) and a conditional U-Net. It currently targets the MNIST dataset, but the architecture and training pipeline are intentionally dataset-agnostic and can scale to larger and more complex image domains with minimal changes.
+Latent Diffusion Model Implementation is a Python project exploring the implementation of a latent diffusion model using a variational autoencoder (VAE) and a conditional U-Net. It currently targets the MNIST dataset, but the architecture and training pipeline are intentionally dataset-agnostic and can scale to larger and more complex image domains with minimal changes.
 
 ## Features
 - **Modular Architecture** – separate training routines for VAE and U-Net components built on top of Hugging Face Diffusers.
@@ -8,8 +8,7 @@ Latent Diffusion MNIST Experiment is a Python project exploring the implementati
 - **Configurable Training** – hyperparameters (batch size, learning rates, epochs, etc.) are managed via `config.yaml` for reproducible experiments.
 - **Efficient & Stable Training** – leverages `Accelerate` for device management and distributed training, cosine learning rate schedules, and EMA tracking. Added gradient clipping.
 - **Visualization Utilities** – automatic saving of reconstruction and generation plots for monitoring model performance.
-- **Gradio App** – *Work in Progress*
-<!-- - **Gradio App** – ready-to-deploy web app for interactive predictions. Hosted on [Huggingface Spaces](https://huggingface.co/spaces/codinglabsong/aging-gan). -->
+- **Gradio App** – ready-to-deploy web app for interactive predictions. Hosted on [Huggingface Spaces](https://huggingface.co/spaces/codinglabsong/latent-diffuser-model-experiment-hf-mnist).
 - **Developer Tools & CI** – Linting with ruff and black, unit tests with pytest, end‐to‐end smoke tests in GitHub Actions.
 
 ## Installation
@@ -71,14 +70,12 @@ The script will load the VAE and EMA-smoothed U-Net weights and produce images s
 - Integrate more advanced schedulers or guidance techniques.
 
 ## Running the Gradio Inference App
-*Work in Progress*
-
-<!-- This project includes an interactive Gradio app for making predictions with the trained model.
+This project includes an interactive Gradio app for making predictions with the trained model.
 
 1. **Obtain the Trained Model:**
     - Ensure that a trained model directory (`models/vae.pth` and `models/ema-unet.pth`) is available in the project root.
     - If you trained the model yourself, it should be saved automatically in the project root.
-    - Otherwise, you can download it from [Releases](https://github.com/codinglabsong/aging-gan/releases/tag/v1.0.0) and add it in the project root.
+    - Otherwise, you can download it from [Releases](https://github.com/codinglabsong/ldm-hf/releases/tag/v1.0.0) and add it in the project root.
 
 2. **Run the App Locally:**
     ```bash
@@ -86,7 +83,7 @@ The script will load the VAE and EMA-smoothed U-Net weights and produce images s
     ```
     - Visit the printed URL (e.g., `http://127.0.0.1:7860`) to interact with the model.
 
-> You can also access the hosted demo on [Huggingface Spaces](https://huggingface.co/spaces/codinglabsong/aging-gan) -->
+> You can also access the hosted demo on [Huggingface Spaces](https://huggingface.co/spaces/codinglabsong/latent-diffuser-model-experiment-hf-mnist)
 
 
 ## Testing
