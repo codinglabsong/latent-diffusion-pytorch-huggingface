@@ -1,12 +1,12 @@
-# Configurable vairabls
+# Configurable variables
 # model
 batch_size: 64
 img_size: 32
 latent_channels: 4
 # train hyperparams
 lr_vae: 0.0001 # 1e-4
-vae_epochs: 3 # 50
+vae_epochs: 50 # 50
 lr_unet: 0.0001 # 1e-4
-unet_epochs: 3 # 100
-denoising_timesteps: 10 # 1000
-num_warmup_steps: 5 # 500
+unet_epochs: 60 # 100
+denoising_timesteps: 1000 # 1000
+num_warmup_steps: 500 # 500

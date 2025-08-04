@@ -20,8 +20,9 @@ mnist_test = datasets.MNIST(
     root=str(DATA_DIR), train=False, download=True, transform=transform
 )
 
-mnist_train = Subset(mnist_train, list(range(100)))
-mnist_test = Subset(mnist_test, list(range(100)))
+# For Smoke Tests
+# mnist_train = Subset(mnist_train, list(range(100)))
+# mnist_test = Subset(mnist_test, list(range(100)))
 
 train_loader = torch.utils.data.DataLoader(
     mnist_train, batch_size=cfg.batch_size, shuffle=True
