@@ -1,6 +1,5 @@
 import torch
 from torchvision import datasets, transforms
-from torch.utils.data import Subset
 from ldm.config import project_root, cfg
 
 DATA_DIR = project_root / "data"
@@ -20,7 +19,8 @@ mnist_test = datasets.MNIST(
     root=str(DATA_DIR), train=False, download=True, transform=transform
 )
 
-# For Smoke Tests
+# Uncomment For Smoke Tests on Small Sub Dataset
+# from torch.utils.data import Subset
 # mnist_train = Subset(mnist_train, list(range(100)))
 # mnist_test = Subset(mnist_test, list(range(100)))
 
