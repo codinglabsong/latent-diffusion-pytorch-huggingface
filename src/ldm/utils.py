@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import os
 import matplotlib.pyplot as plt
-from ldm.config import vae_plots_path, project_root, cfg, device
+from ldm.config import vae_plots_path, unet_plots_path, cfg, device
 from diffusers import DDPMScheduler
 from tqdm import tqdm
 
@@ -68,7 +68,7 @@ def generate(
     """
 
     def plot(recon_imgs, timesteps, epoch):
-        create_path_if_not_exists(os.path.join(str(project_root), "plots", "generated"))
+        create_path_if_not_exists(os.path.join(unet_plots_path, f'epoch_{epoch}'))
         recon_imgs = revert_images(recon_imgs.sample)
         fig, axs = plt.subplots(2, 5)
         for i in range(10):
@@ -78,7 +78,7 @@ def generate(
         plt.suptitle(f"Timesteps: {timesteps}")
         plt.savefig(
             os.path.join(
-                str(project_root), "plots", "generated", f"plot {timesteps}.png"
+                unet_plots_path, f'epoch_{epoch}', f"plot {timesteps}.png"
             )
         )
         plt.clf()
