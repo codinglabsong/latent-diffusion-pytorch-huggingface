@@ -89,21 +89,21 @@ The script will load the VAE and EMA-smoothed U-Net weights and produce images s
 ![epoch0-plot 0](assets/epoch0-plot_0.png)
 > The diffuser model is still grasping the structure of the numbers given a class embedding (between 0 - 9) that is chosen by the user.
 
-**U-Net Epoch 15**
+**U-Net Epoch 16**
 
 ![epoch0-plot 0](assets/epoch15-plot_999.png)
 ![epoch0-plot 0](assets/epoch15-plot_500.png)
 ![epoch0-plot 0](assets/epoch15-plot_0.png)
 > Although the model is having a better understanding of the structures, we can see that it struggles with numbers that are similar to each other. Here, the generated image of the class embedding of 7 turns out to be 9, which is incorrect.
 
-**U-Net Epoch 45**
+**U-Net Epoch 46**
 
 ![epoch0-plot 0](assets/epoch45-plot_999.png)
 ![epoch0-plot 0](assets/epoch45-plot_500.png)
 ![epoch0-plot 0](assets/epoch45-plot_0.png)
 > We can see that the numbers are either incomplete or too blurry, showing that the model needs further training.
 
-**U-Net Epoch 59**
+**U-Net Epoch 60**
 
 ![epoch0-plot 0](assets/epoch59-plot_999.png)
 ![epoch0-plot 0](assets/epoch59-plot_500.png)
