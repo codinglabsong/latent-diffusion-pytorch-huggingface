@@ -5,7 +5,7 @@ from diffusers import DDPMScheduler
 from ldm.utils import generate, create_path_if_not_exists
 from ldm.config import (
     cfg,
-    unet_model_path,
+    ema_unet_model_path,
     vae_model_path,
     project_root,
     vae_plots_path,
@@ -16,9 +16,9 @@ from ldm.train import train
 
 
 def sample():
-    if os.path.exists(unet_model_path) and os.path.exists(vae_model_path):
+    if os.path.exists(ema_unet_model_path) and os.path.exists(vae_model_path):
         vae.load_state_dict(torch.load(vae_model_path))
-        unet.load_state_dict(torch.load(unet_model_path))
+        unet.load_state_dict(torch.load(ema_unet_model_path))
         noise_scheduler = DDPMScheduler(num_train_timesteps=cfg.denoising_timesteps)
         generate(vae, unet, noise_scheduler, 101)
     else:
