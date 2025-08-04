@@ -10,5 +10,6 @@ setup(
         "matplotlib",
         "diffusers[torch]",
         "torchvision",
+        "gradio",
     ],
 )

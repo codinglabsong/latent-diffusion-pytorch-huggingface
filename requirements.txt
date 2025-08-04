@@ -2,3 +2,4 @@ tqdm
 matplotlib
 diffusers[torch] 
 torchvision
+gradio
