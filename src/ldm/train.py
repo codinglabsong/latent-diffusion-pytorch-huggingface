@@ -1,3 +1,5 @@
+"""Training routines for VAE and UNet models."""
+
 import numpy as np
 import os
 import torch
@@ -6,6 +8,7 @@ from accelerate import Accelerator
 from diffusers.optimization import get_cosine_schedule_with_warmup
 from diffusers.training_utils import EMAModel
 from diffusers import DDPMScheduler
+from typing import Iterable
 from tqdm import tqdm
 
 from ldm.utils import create_path_if_not_exists, plot_side_by_side, generate
@@ -23,7 +26,8 @@ from ldm.models import vae, unet
 from ldm.data import train_loader, test_loader
 
 
-def train_vae():
+def train_vae() -> None:
+    """Train the variational autoencoder."""
     vae_optimizer = torch.optim.AdamW(vae.parameters(), lr=cfg.lr_vae)
     for epoch in range(cfg.vae_epochs):
         losses = []
@@ -70,7 +74,8 @@ def train_vae():
     torch.save(vae.state_dict(), vae_model_path)
 
 
-def train_unet(unet, train_loader):
+def train_unet(unet: torch.nn.Module, train_loader: Iterable) -> None:
+    """Train the UNet model used for denoising."""
     vae.load_state_dict(torch.load(vae_model_path))
     noise_scheduler = DDPMScheduler(num_train_timesteps=cfg.denoising_timesteps)
     optimizer = torch.optim.AdamW(unet.parameters(), lr=cfg.lr_unet)
@@ -163,7 +168,8 @@ def train_unet(unet, train_loader):
     torch.save(unet.state_dict(), ema_unet_model_path)
 
 
-def train():
+def train() -> None:
+    """Execute training for both models if needed."""
     create_path_if_not_exists(str(project_root / "models"))
     create_path_if_not_exists(str(project_root / "plots"))
     create_path_if_not_exists(vae_plots_path)

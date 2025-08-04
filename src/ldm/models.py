@@ -1,3 +1,5 @@
+"""Model definitions for the VAE and UNet components."""
+
 from diffusers import UNet2DConditionModel, AutoencoderKL
 
 from ldm.config import cfg, device

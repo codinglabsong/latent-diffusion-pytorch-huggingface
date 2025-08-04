@@ -1,3 +1,5 @@
+"""Application-wide configuration and resource paths."""
+
 import torch
 import yaml
 import os

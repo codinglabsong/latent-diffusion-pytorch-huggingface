@@ -1,3 +1,5 @@
+"""MNIST dataset utilities and common data loaders."""
+
 import torch
 from torchvision import datasets, transforms
 from ldm.config import project_root, cfg

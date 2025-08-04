@@ -1,3 +1,5 @@
+"""Utility helpers for data processing and visualization."""
+
 import torch
 import numpy as np
 import os
@@ -7,12 +9,14 @@ from diffusers import DDPMScheduler
 from tqdm import tqdm
 
 
-def create_path_if_not_exists(path: str):
+def create_path_if_not_exists(path: str) -> None:
+    """Create a directory if it does not already exist."""
     if not os.path.exists(path):
         os.makedirs(path)
 
 
-def revert_images(imgs: torch.tensor):
+def revert_images(imgs: torch.Tensor) -> np.ndarray:
+    """Convert normalized tensors into displayable images."""
     h = imgs.shape[-1]
     imgs = imgs.cpu().detach().numpy()
     min_vals = imgs.min(axis=(1, 2, 3))[:, np.newaxis, np.newaxis, np.newaxis]
@@ -26,9 +30,9 @@ def revert_images(imgs: torch.tensor):
 
 
 def plot_side_by_side(
-    images_y: torch.tensor, images_pred: torch.tensor, latents: torch.tensor, epoch: int
-):
-
+    images_y: torch.Tensor, images_pred: torch.Tensor, latents: torch.Tensor, epoch: int
+) -> None:
+    """Visualize input images, outputs and latent channels."""
     images_y, images_pred = revert_images(images_y), revert_images(images_pred)
     latents = revert_images(latents)
     idx = np.random.randint(0, images_y.shape[0])
@@ -62,13 +66,11 @@ def generate(
     unet: torch.nn.Module,
     noise_scheduler: DDPMScheduler,
     epoch: int,
-):
-    """
-    Generate the samples from Unet.
-    """
+) -> None:
+    """Generate samples from the UNet model."""
 
-    def plot(recon_imgs, timesteps, epoch):
-        create_path_if_not_exists(os.path.join(unet_plots_path, f'epoch_{epoch}'))
+    def plot(recon_imgs: torch.Tensor, timesteps: int, epoch: int) -> None:
+        create_path_if_not_exists(os.path.join(unet_plots_path, f"epoch_{epoch}"))
         recon_imgs = revert_images(recon_imgs.sample)
         fig, axs = plt.subplots(2, 5)
         for i in range(10):
@@ -77,9 +79,7 @@ def generate(
             axs[i // 5][i % 5].set_title(str(i))
         plt.suptitle(f"Timesteps: {timesteps}")
         plt.savefig(
-            os.path.join(
-                unet_plots_path, f'epoch_{epoch}', f"plot {timesteps}.png"
-            )
+            os.path.join(unet_plots_path, f"epoch_{epoch}", f"plot {timesteps}.png")
         )
         plt.clf()
 

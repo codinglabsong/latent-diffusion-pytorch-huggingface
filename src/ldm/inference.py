@@ -1,3 +1,5 @@
+"""Run inference using trained models to generate samples."""
+
 import torch
 import os
 from diffusers import DDPMScheduler
@@ -15,7 +17,8 @@ from ldm.models import vae, unet
 from ldm.train import train
 
 
-def sample():
+def sample() -> None:
+    """Generate images using the VAE and UNet models."""
     if os.path.exists(ema_unet_model_path) and os.path.exists(vae_model_path):
         vae.load_state_dict(torch.load(vae_model_path))
         unet.load_state_dict(torch.load(ema_unet_model_path))
