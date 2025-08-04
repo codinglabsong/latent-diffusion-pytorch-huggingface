@@ -52,7 +52,7 @@ def infer(digit: str) -> Image.Image:
 
 def build_demo() -> gr.Interface:
     dropdown = gr.Dropdown(
-        choices=[str(i) for i in range(10)], value="0", label="Digit"
+        choices=[str(i) for i in range(10)], value="0", label="Choose Digit to Generate"
     )
     output = gr.Image(type="pil", height=512, width=512)
     return gr.Interface(
