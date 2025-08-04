@@ -20,7 +20,7 @@ def sample():
         vae.load_state_dict(torch.load(vae_model_path))
         unet.load_state_dict(torch.load(ema_unet_model_path))
         noise_scheduler = DDPMScheduler(num_train_timesteps=cfg.denoising_timesteps)
-        generate(vae, unet, noise_scheduler, 101)
+        generate(vae, unet, noise_scheduler, cfg.unet_epochs + 1)
     else:
         print("Models not trained, training...")
         train()
