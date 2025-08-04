@@ -1,0 +1,1 @@
+I used this for the mnist dataset, but really the dataset is quite easily changeable while the rest of the logic is mostly the same and transferable for more large scale and complicated datasets.

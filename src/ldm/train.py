@@ -17,6 +17,7 @@ from ldm.config import (
     device,
     unet_model_path,
     project_root,
+    ema_unet_model_path,
 )
 from ldm.models import vae, unet
 from ldm.data import train_loader, test_loader
@@ -76,7 +77,7 @@ def train_unet(unet, train_loader):
     lr_scheduler = get_cosine_schedule_with_warmup(
         optimizer=optimizer,
         num_warmup_steps=cfg.num_warmup_steps,
-        num_training_steps=(len(train_loader) * 100),
+        num_training_steps=(len(train_loader) * cfg.unet_epochs),
     )
 
     accelerator = Accelerator()
@@ -153,7 +154,13 @@ def train_unet(unet, train_loader):
                 losses.append(loss.item())
 
         print(f"Epoch: {epoch+1}, Test loss: {np.mean(losses)}")
+
+    # Save the raw U-Net
     torch.save(unet.state_dict(), unet_model_path)
+
+    # Save the EMA version of the U-Net
+    ema_model.copy_to(unet.parameters())  # swap model weights with EMA
+    torch.save(unet.state_dict(), ema_unet_model_path)
 
 
 def train():

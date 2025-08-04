@@ -10,6 +10,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 vae_model_path = str(project_root / "models" / "vae.pth")
 unet_model_path = str(project_root / "models" / "unet.pth")
+ema_unet_model_path = str(project_root / "models" / "ema-unet.pth")
 
 vae_plots_path = str(project_root / "plots" / "vae")
 unet_plots_path = str(project_root / "plots" / "unet")
